@@ -1,0 +1,11 @@
+# Attempt 1 (Rust)
+
+Neural Networks are hard. Rust's borrow checking certainly didn't help, however this was likely due to my *interesting* approach (readers may benefit by reading the next paragraph before this, I can't be bothered to do proper structuring right now). I made a struct called `NeuralNetwork` that contained a `Vec` of layers and another `Vec` of outputs. To calculate an output from the network, I went layer by layer, knowing that by the time I reached a neuron all of its inputs had already contributed to its sum. Each one would perform the necassary math on the neurons they were connected to, using their `Vec` of `Connection`s that contained their `target` and `weight`. Looking at other examples, it seems like this definitly wasn't a very popular choice, but it definitly made the code reasonably legible. The reason the borrow checker was so frustrating was that I modified the original struct during calculations before resetting it. This wouldn't have been a problem if I pre-generated every neuron (maybe it would have, I honestly can't think about rust references for at least a month after this monstrosity). Anyways, it likely would have been better to keep all of my temporary math elsewhere which would have the added benefit of not requiring a mutable reference to run the neural network.
+
+I didn't generate all of the neurons of each layer to begin with; instead I opted to generate them as the training progressed. This was probably a mistake, as it was seemingly impossible to find a good reason for a child to generate a new neuron, since there were virtually no incentives.
+
+## Mistakes 
+
+- Despite understanding that I needed bias for the Network to function, I opted to implement that later and ended up with some very complicated code that I didn't really want to mess with. Next time I'll do that earlier.
+- Running by changing the internal structure was an epic mistake. Definitly don't do that again.
+- Definitly should have pre-generated all the neurons.
